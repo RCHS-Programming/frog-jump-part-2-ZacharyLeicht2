@@ -12,6 +12,7 @@ public class Frog extends Actor
     public boolean isDownPress;
     public boolean isRightPress;
     public boolean isLeftPress;
+    public int lives;
     
     public Frog()
     {
@@ -19,6 +20,7 @@ public class Frog extends Actor
         isDownPress = false;
         isRightPress = false;
         isLeftPress = false;
+        lives = 3;
     }
     
     /**
@@ -29,6 +31,7 @@ public class Frog extends Actor
     {
         keyJump();
         checkCollision();
+        getWorld().showText("LIVES: " + lives, 50,30);
     }    
     
     public void keyJump()
@@ -36,8 +39,12 @@ public class Frog extends Actor
         //Check for the up key
         if( isUpPress == false && Greenfoot.isKeyDown("up") && getY() > 60)
         {
-            setLocation( getX() , getY() - 60);
-            isUpPress = true;
+        setLocation( getX() , getY() - 60);
+        isUpPress = true;
+        if( getY() < 60 )
+        {
+            Greenfoot.setWorld( new WinScreen()); 
+        }
         }
         
         if( isUpPress && !Greenfoot.isKeyDown("up"))
@@ -46,19 +53,40 @@ public class Frog extends Actor
         }
         
         //Check for the down key
+        if( isDownPress == false && Greenfoot.isKeyDown("down") && getY() < 540)
+        { 
+            setLocation( getX() , getY() + 60);
+            isDownPress = true;
+        }
         
-        
-        
+        if( isDownPress && !Greenfoot.isKeyDown("down"))
+        {
+            isDownPress = false;
+        }
         
         //Check for the right key
+        if( isRightPress == false && Greenfoot.isKeyDown("right") && getX() < 740)
+        {
+            setLocation( getX() + 60 , getY());
+            isRightPress = true;
+        }
         
-        
-        
+        if( isRightPress && !Greenfoot.isKeyDown("right")) 
+        {
+            isRightPress = false;
+        }
         
         //Check for the left key
+        if( isLeftPress == false && Greenfoot.isKeyDown("left") && getX() > 10)
+        {
+            setLocation( getX() - 60 , getY()); 
+            isLeftPress = true; 
+        }
         
-        
-        
+        if( isLeftPress && !Greenfoot.isKeyDown("left"))
+        {
+            isLeftPress = false; 
+        }
         
     }
     
@@ -67,6 +95,14 @@ public class Frog extends Actor
         if(isTouching(Car.class) || isTouching(Truck.class))
         {
             setLocation(370, 510);
+            lives = lives - 1;
+            if( lives == 0 )
+            {
+                Greenfoot.setWorld( new LoseScreen() );
+            }
+            setLocation(370, 510);
         }
+        
     }
+   
 }

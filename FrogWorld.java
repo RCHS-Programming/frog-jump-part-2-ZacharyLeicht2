@@ -91,7 +91,7 @@ public class FrogWorld extends World
 
         //third row of Trucks, all y = 90, speed of -10
         addObject( new Truck(-10), 742, 90);
-        
+        addObject( new Truck(-10), 125, 90);
         
     }
 }
